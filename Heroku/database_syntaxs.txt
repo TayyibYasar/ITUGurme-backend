@@ -1,0 +1,59 @@
+CREATE TABLE users_(
+	username varchar(15) PRIMARY KEY,
+    password_ varchar(120) NOT NULL,
+    gurme_score int default 0,
+    join_date date default CURRENT_DATE
+);
+CREATE TABLE foods_(
+	food_name varchar(40) primary key
+);
+CREATE TABLE meals_(
+	meal_id int PRIMARY KEY,
+    food_name varchar(40) NOT NULL,
+    islunch boolean not NULL,
+    FOREIGN KEY(food_name)
+      REFERENCES foods_(food_name)
+);
+CREATE TABLE meals(
+	meal_id serial,
+    food_name varchar(40) NOT NULL,
+    islunch boolean not NULL,
+	meal_date date not NULL,
+	Primary Key(islunch, meal_date, food_name),
+    FOREIGN KEY(food_name)
+      REFERENCES foods_(food_name)
+);
+CREATE TABLE votes_(
+	vote_id serial PRIMARY KEY,
+    vote int NOT NULL,
+	food_name varchar(40) NOT NULL,
+    username varchar(15) not NULL,
+	vote_date date default CURRENT_DATE,
+    FOREIGN KEY(food_name)
+      REFERENCES foods_(food_name),
+	FOREIGN KEY(username)
+      REFERENCES users_(username)
+);
+CREATE TABLE comments_(
+	comment_id serial PRIMARY KEY,
+    text_ varchar(250) NOT NULL,
+	food_name varchar(40) NOT NULL,
+    username varchar(15) not NULL,
+	comment_date date default CURRENT_DATE,
+    comment_score int default 0,
+	FOREIGN KEY(food_name)
+      REFERENCES foods_(food_name),
+	FOREIGN KEY(username)
+      REFERENCES users_(username)
+);
+CREATE TABLE comments_votes_(
+	comment_vote_id serial,
+    comment_id int NOT NULL,
+    username varchar(15) not NULL,
+	isliked boolean NOT NULL,
+	PRIMARY KEY(comment_id, username),
+	FOREIGN KEY(comment_id)
+      REFERENCES comments_(comment_id),
+	FOREIGN KEY(username)
+      REFERENCES users_(username)
+);
